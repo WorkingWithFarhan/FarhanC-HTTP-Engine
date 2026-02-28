@@ -1,3 +1,17 @@
+/*
+    FarhanC-HTTP-Engine
+    --------------------
+    Simple HTTP server built using Windows Winsock.
+
+    Current Version: 0.2
+    Goal:
+    - Understand how socket server works
+    - Handle one HTTP request
+    - Send basic response
+
+    Author: Farhan Khan
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,67 +20,117 @@
 #pragma comment(lib, "ws2_32.lib")
 
 #define PORT 8080
+#define BUFFER_SIZE 1024
 
 int main() {
+
+    // ============================
+    // Step 1: Initialize Winsock
+    // ============================
     WSADATA wsa;
-    SOCKET server_fd, new_socket;
-    struct sockaddr_in address;
-    int addrlen = sizeof(address);
-    char buffer[1024] = {0};
-
-    // 1. Winsock start karo
     if (WSAStartup(MAKEWORD(2,2), &wsa) != 0) {
-        printf("WSAStartup failed\n");
+        printf("Winsock initialization failed.\n");
         return 1;
     }
 
-    // 2. Socket create karo
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_fd == INVALID_SOCKET) {
-        printf("Socket failed\n");
+    // ============================
+    // Step 2: Create Socket
+    // ============================
+    SOCKET server_socket = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (server_socket == INVALID_SOCKET) {
+        printf("Socket creation failed.\n");
+        WSACleanup();
         return 1;
     }
 
-    // 3. Address setup
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(PORT);
+    // ============================
+    // Step 3: Configure Address
+    // ============================
+    struct sockaddr_in server_address;
 
-    // 4. Bind
-    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == SOCKET_ERROR) {
-        printf("Bind failed\n");
+    server_address.sin_family = AF_INET;          // IPv4
+    server_address.sin_addr.s_addr = INADDR_ANY;  // Accept any IP
+    server_address.sin_port = htons(PORT);        // Convert port to network byte order
+
+    // ============================
+    // Step 4: Bind Socket to Port
+    // ============================
+    if (bind(server_socket, 
+            (struct sockaddr *)&server_address, 
+            sizeof(server_address)) == SOCKET_ERROR) {
+
+        printf("Bind failed.\n");
+        closesocket(server_socket);
+        WSACleanup();
         return 1;
     }
 
-    // 5. Listen
-    if (listen(server_fd, 3) == SOCKET_ERROR) {
-        printf("Listen failed\n");
+    // ============================
+    // Step 5: Start Listening
+    // ============================
+    if (listen(server_socket, 3) == SOCKET_ERROR) {
+        printf("Listen failed.\n");
+        closesocket(server_socket);
+        WSACleanup();
         return 1;
     }
 
-    printf("Server chal raha hai port %d pe...\n", PORT);
+    printf("Server is running on port %d...\n", PORT);
+    printf("Waiting for client connection...\n");
 
-    // 6. Accept
-    new_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen);
-    if (new_socket == INVALID_SOCKET) {
-        printf("Accept failed\n");
+    // ============================
+    // Step 6: Accept Client
+    // ============================
+    struct sockaddr_in client_address;
+    int client_len = sizeof(client_address);
+
+    SOCKET client_socket = accept(server_socket,
+                                  (struct sockaddr *)&client_address,
+                                  &client_len);
+
+    if (client_socket == INVALID_SOCKET) {
+        printf("Client connection failed.\n");
+        closesocket(server_socket);
+        WSACleanup();
         return 1;
     }
 
-    recv(new_socket, buffer, sizeof(buffer), 0);
-    printf("Request:\n%s\n", buffer);
+    printf("Client connected successfully.\n");
 
-    char *response =
+    // ============================
+    // Step 7: Receive Request
+    // ============================
+    char buffer[BUFFER_SIZE];
+    memset(buffer, 0, BUFFER_SIZE);
+
+    recv(client_socket, buffer, BUFFER_SIZE, 0);
+
+    printf("------ Incoming Request ------\n");
+    printf("%s\n", buffer);
+    printf("------------------------------\n");
+
+    // ============================
+    // Step 8: Send HTTP Response
+    // ============================
+    const char *http_response =
         "HTTP/1.1 200 OK\r\n"
         "Content-Type: text/plain\r\n"
         "\r\n"
-        "Hello from Farhan Windows Server!";
+        "Hello from FarhanC HTTP Engine v0.2";
 
-    send(new_socket, response, strlen(response), 0);
+    send(client_socket, http_response, strlen(http_response), 0);
 
-    closesocket(new_socket);
-    closesocket(server_fd);
+    printf("Response sent successfully.\n");
+
+    // ============================
+    // Step 9: Cleanup
+    // ============================
+    closesocket(client_socket);
+    closesocket(server_socket);
     WSACleanup();
+
+    printf("Server shutdown cleanly.\n");
 
     return 0;
 }
