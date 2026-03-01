@@ -1,7 +1,7 @@
 /*
     FarhanC-HTTP-Engine
     ----------------------------------------
-    Version: 0.3
+    Version: 0.4
 
     Description:
     A minimal HTTP server built using Windows Winsock.
@@ -118,6 +118,13 @@ int main() {
         memset(buffer, 0, BUFFER_SIZE);
 
         recv(client_socket, buffer, BUFFER_SIZE, 0);
+        // Extract request method and path
+        char path[100];
+        char method[10];
+        sscanf(buffer, "%s %s", method, path);
+
+        // Simple request logging
+        printf("[LOG] Method: %s | Path: %s\n", method, path);
 
         printf("------ Incoming Request ------\n");
         printf("%s\n", buffer);
@@ -130,7 +137,7 @@ int main() {
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: text/plain\r\n"
             "\r\n"
-            "Hello from FarhanC HTTP Engine v0.3";
+            "Hello from FarhanC HTTP Engine v0.4";
 
         send(client_socket, http_response, strlen(http_response), 0);
 
