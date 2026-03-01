@@ -1,104 +1,131 @@
-🔥 FarhanC-HTTP-Engine 🔥
+# 🐔 Red Hen Kitchen – Backend Server
 
-A minimal HTTP server built from scratch in C using Windows Winsock.
+A custom HTTP backend server built in C using Windows Winsock.
 
-Built to deeply understand:
+This project powers the Red Hen Kitchen website.
 
-Socket programming
-HTTP protocol internals
-Client-server communication
-Low-level networking fundamentals
+It handles HTTP requests, routes different paths, and serves dynamic responses.
 
-🚀 Project Vision 🚀
+---
 
-This project is not just a “server”.
-It is a learning-driven systems engineering journey.
-The goal is to:
+## 🚀 Project Purpose
 
-1) Understand how real web servers work internally
-2) Build networking fundamentals from scratch
-3) Move toward production-grade backend systems
+Red Hen Kitchen is a food ordering web application.
 
-🏗 Architecture Overview 🏗
+This backend server is responsible for:
 
-Client (Browser / curl)
+- Handling client connections
+- 
+- Processing HTTP requests
+- 
+- Routing different URLs
+- 
+- Serving HTML responses
+- 
+- Returning proper HTTP status codes
+- 
+- Managing multiple client requests sequentially
+- 
 
-↓
+This project focuses on building backend fundamentals from scratch
+without using any external frameworks.
 
+---
+
+## 🏗 Architecture Overview
+
+Browser (Client)
+
+        ↓
+        
 TCP Connection (Port 8080)
 
-↓
+        ↓
+        
+Custom Winsock HTTP Server
 
-Winsock Socket Server
+        ↓
+        
+Request Parsing (Method + Path)
 
-↓
+        ↓
+        
+Routing Engine
 
-HTTP Request Parsing
+        ↓
+        
+HTML Response / 404
 
-↓
+---
 
-HTTP Response Generation
+## 📌 Current Version
+
+### ✅ v0.5 – Basic Routing System
+
+Features:
+
+- Continuous server loop
+- 
+- Multiple client handling (sequential)
+- 
+- HTTP request parsing
+- 
+- Route-based response handling
+- 
+- 404 Not Found support
+- 
+- Simple HTML rendering
+- 
+- Console logging
+
+---
+
+## 🛠 Tech Stack
+
+- C (Systems Programming)
+- 
+- Windows Winsock API
+- 
+- TCP/IP
+- 
+- HTTP/1.1 Protocol
+- 
+
+---
+
+## 🧪 How to Run
+
+Compile:
 
 
-📌 Current Versions 📌
-
-✅ v0.1 – Basic Socket Setup
-Winsock initialization
-Socket creation
-Bind to port
-Basic connection handling
-
-✅ v0.2 – Single Request Handling
-Accept single client
-Receive HTTP request
-Send static HTTP response
-Clean shutdown
-
-✅ v0.3 – Multi-Client Support (Sequential)
-Infinite loop with accept()
-Handles multiple clients one-by-one
-Server runs continuously
-
-✅ v0.4 – Structured Logging
-Clean log formatting
-[INFO], [REQUEST], [RESPONSE], [ERROR] prefixes
-Better console readability
-Debug-friendly output
-
-🛠 Technologies Used 🛠
-
-C (Systems Programming)
-Windows Winsock API
-
-TCP/IP
-
-HTTP/1.1 Protocol
-
-
-🧪 How to Run 🧪
-
-1) Compile:
 gcc src/server.c -o server -lws2_32
 
 
-2) Run:
+Run:
+
+
 .\server
 
 
-3) Open browser:
-http://localhost:8080
+Open browser:
 
 
-📂 Project Structure 📂
+http://localhost:8080/
 
-FarhanC-HTTP-Engine/
+http://localhost:8080/menu
+
+---
+
+## 📂 Project Structure
+
+
+Red-Hen-Kitchen/
+
 │
 
 ├── src/
 
-│ ├── server.c
-
-│ └── .gitignore
+│ └── server.c
 
 │
 
@@ -107,53 +134,59 @@ FarhanC-HTTP-Engine/
 └── .gitignore
 
 
-🧠 What This Server Currently Does 🧠
+---
 
-✔ Accepts HTTP connections
+## 🧠 What This Server Currently Supports
 
-✔ Prints full request to console
+✔ Home route (`/`)  
 
-✔ Sends valid HTTP 200 response
+✔ Menu route (`/menu`)  
 
-✔ Handles multiple clients sequentially
+✔ 404 handling  
 
-✔ Structured console logging
+✔ Sequential multi-client support  
 
+✔ Manual routing logic  
 
-❌ Current Limitations ❌
-
-Not concurrent (no threads yet)
-
-No static file serving
-
-No routing
-
-No HTTPS
-
-No persistent connections
-
-No file-based logging
+✔ Clean HTTP response structure  
 
 
-🎯 Roadmap 🎯
+---
 
-🔲 v0.5 – File-based logging
+## ❌ Current Limitations
 
-🔲 v0.6 – Static HTML file serving
+- No POST handling yet
+- 
+- No database integration
+- 
+- No static file serving
+- 
+- No CSS/JS external files
+- 
+- No concurrency (threading)
+- 
+- No HTTPS
 
-🔲 v0.7 – Basic routing
+---
 
-🔲 v0.8 – Thread-based concurrency
+## 🎯 Next Milestones
 
-🔲 v1.0 – Production-ready minimal HTTP engine
+🔲 v0.6 – Handle POST /order  
 
+🔲 v0.7 – Serve external HTML files  
 
-📖 Why This Project Matters 📖
+🔲 v0.8 – File-based order storage  
 
-Most developers use frameworks
+🔲 v0.9 – Basic admin dashboard
 
-Few understand what happens beneath them
+🔲 v1.0 – Production-ready minimal food ordering backend  
 
-This project builds that foundation
+---
 
-Understanding sockets + HTTP at low level makes backend engineering stronger
+## 📖 Why Build This?
+
+Most developers use frameworks.
+
+This project builds the backend foundation from scratch.
+
+Understanding sockets + HTTP deeply creates strong backend engineers.
