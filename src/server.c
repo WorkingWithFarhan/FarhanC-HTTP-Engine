@@ -1,22 +1,30 @@
 /*
-    FarhanC-HTTP-Engine
+    Project: Red Hen Kitchen Backend Server
     ----------------------------------------
-    Version: 0.4
+    Version: 0.5
 
     Description:
-    A minimal HTTP server built using Windows Winsock.
-    This version introduces continuous client handling.
-    The server no longer shuts down after serving one request.
+    Custom HTTP server built using Windows Winsock.
+    This backend powers the Red Hen Kitchen web application.
 
-    Goal:
-    - Handle multiple client connections (sequential)
-    - Continuous listening loop
+    Current Capabilities:
+    - Continuous server loop
+    - Sequential multi-client handling
+    - HTTP request parsing (method + path)
+    - Route-based response system
+    - 404 Not Found handling
+    - HTML response rendering
 
-    Learning Focus:
-    - Socket lifecycle
-    - Persistent server loop
-    - Sequential client handling
-    - Clean resource management
+    Supported Routes:
+    - GET /
+    - GET /menu
+
+    Future Goals:
+    - POST /order handling
+    - Order storage system
+    - Static file serving
+    - Database integration
+    - Concurrency support
 
     Author: Farhan Khan
 */
@@ -130,16 +138,61 @@ int main() {
         printf("%s\n", buffer);
         printf("------------------------------\n");
 
-        // -------------------------------------
-        // Send HTTP response
-        // -------------------------------------
-        const char *http_response =
-            "HTTP/1.1 200 OK\r\n"
-            "Content-Type: text/plain\r\n"
-            "\r\n"
-            "Hello from FarhanC HTTP Engine v0.4";
+        char response[BUFFER_SIZE * 4];
+memset(response, 0, sizeof(response));
 
-        send(client_socket, http_response, strlen(http_response), 0);
+// ROUTING LOGIC
+if (strcmp(path, "/") == 0) {
+
+    sprintf(response,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/html\r\n"
+        "\r\n"
+        "<html><head><title>Red Hen Kitchen</title></head>"
+        "<h1>Red Hen Kitchen</h1>"
+        "<body style='font-family: Arial; text-align:center;'>"
+        "<hr>"
+        "<p>Authentic homemade meals delivered fresh.</p>"
+        "</body></html>"
+        "<a href='/menu'>View Our Menu</a>"
+    );
+
+}
+else if (strcmp(path, "/menu") == 0) {
+
+    sprintf(response,
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/html\r\n"
+        "\r\n"
+        "<html><head><title>Our Menu - Red Hen Kitchen</title></head>"
+        "<h1>Our Menu</h1>"
+        "<body style='font-family: Arial; text-align:center;'>"
+        "<li>Butter Chicken</li>"
+        "<ul style='list-style:none;'>"
+        "<li>Chicken Biryani</li>"
+        "<li>Paneer Tikka</li>"
+        "<hr>"
+        "</ul>"
+        "</body></html>"
+        "<a href='/'>Back to Home</a>"
+    );
+
+}
+else {
+
+    sprintf(response,
+        "HTTP/1.1 404 Not Found\r\n"
+        "Content-Type: text/html\r\n"
+        "\r\n"
+        "<html><body style='text-align:center;'>"
+        "<h1>404 - Page Not Found</h1>"
+        "<a href='/'>Go Home</a>"
+        "</body></html>"
+    );
+
+}
+
+send(client_socket, response, strlen(response), 0);
 
         printf("Response sent successfully.\n");
 
