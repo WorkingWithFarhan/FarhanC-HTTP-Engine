@@ -1,0 +1,151 @@
+/* ==========================================================
+   Red Hen Kitchen UI System
+   Dark Modern Restaurant Theme
+========================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f0f12;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 10%;
+    align-items: center;
+    background: rgba(20,20,25,0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+}
+
+.navbar a {
+    color: #aaa;
+    text-decoration: none;
+    margin-left: 25px;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #fff;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    text-align: center;
+    padding: 120px 20px;
+    background: radial-gradient(circle at top, #1a1a22, #0f0f12);
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    color: #bbb;
+    margin-bottom: 40px;
+}
+
+/* ================= BUTTON ================= */
+
+.btn-primary {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 50, 100, 0.3);
+}
+
+/* ================= ORDER SECTION ================= */
+
+.order-section {
+    padding: 80px 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.order-card {
+    background: rgba(30,30,35,0.9);
+    padding: 40px;
+    border-radius: 20px;
+    width: 400px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.order-card h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.order-card input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: none;
+    background: #1f1f25;
+    color: white;
+}
+
+.order-card input:focus {
+    outline: none;
+    border: 1px solid #ff512f;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ================= ANIMATIONS ================= */
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s forwards;
+}
+
+.delay {
+    animation-delay: 0.5s;
+}
+
+.delay2 {
+    animation-delay: 1s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
