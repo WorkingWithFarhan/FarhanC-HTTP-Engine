@@ -1,27 +1,35 @@
-// =============================================
-// Red Hen Kitchen Frontend Script
-// =============================================
-
 document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("orderForm");
     const message = document.getElementById("formMessage");
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
 
-        const name = form.elements["name"].value.trim();
-        const item = form.elements["item"].value.trim();
-        const address = form.elements["address"].value.trim();
+        e.preventDefault();
 
-        if (name.length < 2 || item.length < 2 || address.length < 5) {
-            e.preventDefault();
+        const name = form.querySelector('input[name="name"]').value.trim();
+        const item = form.querySelector('input[name="item"]').value.trim();
+        const address = form.querySelector('input[name="address"]').value.trim();
+
+        if (!name || !item || !address) {
             message.style.color = "red";
-            message.textContent = "Please fill all fields correctly.";
+            message.textContent = "Please fill all fields.";
             return;
         }
 
         message.style.color = "#0f0";
         message.textContent = "Processing order...";
+
+        const response = await fetch("/order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `name=${encodeURIComponent(name)}&item=${encodeURIComponent(item)}&address=${encodeURIComponent(address)}`
+        });
+
+        const data = await response.json();
+        message.textContent = data.message;
     });
 
 });
