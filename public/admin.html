@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#111;
+color:white;
+text-align:center;
+padding-top:40px;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+}
+
+td,th{
+border:1px solid #555;
+padding:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Orders Dashboard</h1>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Item</th>
+<th>Address</th>
+</tr>
+</thead>
+
+<tbody id="orders"></tbody>
+
+</table>
+
+<script>
+
+async function loadOrders(){
+
+const res = await fetch("/api/orders");
+const data = await res.json();
+
+const table = document.getElementById("orders");
+
+data.forEach(order=>{
+
+const row=document.createElement("tr");
+
+row.innerHTML=
+`<td>${order.id}</td>
+<td>${order.name}</td>
+<td>${order.item}</td>
+<td>${order.address}</td>`;
+
+table.appendChild(row);
+
+});
+
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>
