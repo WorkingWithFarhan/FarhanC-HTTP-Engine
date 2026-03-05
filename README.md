@@ -416,6 +416,4 @@ Built for learning, scaling, and real-world capability.
 
 ---
 
-🔥 Red Hen Kitchen Backend  
-
-From raw sockets to scalable HTTP engine.
+🔥 Red Hen Kitchen Backend
